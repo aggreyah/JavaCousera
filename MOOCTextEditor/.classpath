@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/richtextfx-fat-0.6.10.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/cldrdata.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/dnsns.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/jaccess.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/jfxrt.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/localedata.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/nashorn.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/sunec.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/sunjce_provider.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/sunpkcs11.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/jre1.8.0_221/lib/ext/zipfs.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
