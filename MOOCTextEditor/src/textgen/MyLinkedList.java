@@ -2,8 +2,6 @@ package textgen;
 
 import java.util.AbstractList;
 
-import com.aggreyah.demonlinkedlist.LLNode;
-
 
 /** A class that implements a doubly linked list
  * 
@@ -48,7 +46,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E get(int index) 
 	{
 		// TODO: Implement this method.
-		if (index > this.size - 1 || index < 1)
+		if (index > this.size - 1 || index < 0)
 			throw new IndexOutOfBoundsException("You are attempting to access from an out of bounds index, Sorry!");
 		LLNode <E> newNode = this.head;
 		if (newNode.next == this.tail)
@@ -69,6 +67,20 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public void add(int index, E element ) 
 	{
 		// TODO: Implement this method
+		// Create a node for the element.
+		LLNode<E> elemNode = new LLNode<>(element);
+		// Find the node at index.
+		LLNode<E> currentNode = this.head;
+		int i = 0;
+		while (i <= index) {
+			currentNode = currentNode.next;
+			i += 1;
+		}
+		elemNode.next = currentNode;
+		elemNode.prev = currentNode.prev;
+		currentNode.prev.next = elemNode;
+		currentNode.prev = elemNode;
+		this.size += 1;
 	}
 
 
@@ -89,7 +101,21 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E remove(int index) 
 	{
 		// TODO: Implement this method
-		return null;
+		// Find the node at index.
+		if (index < 0 || index > this.size - 1)
+			throw new IndexOutOfBoundsException("Sorry Soldier that index is overboard");
+		LLNode<E> currentNode = this.head;
+		int i = 0;
+		while (i <= index) {
+			currentNode = currentNode.next;
+			i += 1;
+		}
+		currentNode.prev.next = currentNode.next;
+		currentNode.next.prev = currentNode.prev;
+		currentNode.next = null;
+		currentNode.prev = null;
+		this.size -= 1;
+		return currentNode.data;
 	}
 
 	/**
@@ -102,7 +128,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E set(int index, E element) 
 	{
 		// TODO: Implement this method
-		return null;
+		this.add(index, element);
+		return this.remove(index + 1);
 	}   
 }
 
