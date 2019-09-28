@@ -32,6 +32,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public boolean add(E element ) 
 	{
 		// TODO: Implement this method
+		if (element == null)
+			throw new NullPointerException("You trying to add a null friend. It's a waste of precious time.");
 		LLNode<E> currentNode = new LLNode <E>(element);
 		currentNode.prev = this.tail.prev;
 		this.tail.prev = currentNode;
@@ -68,6 +70,12 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	{
 		// TODO: Implement this method
 		// Create a node for the element.
+		if (element == null)
+			throw new NullPointerException("You trying to add a null friend. It's a waste of precious time.");
+		if (index < 0)
+			throw new IndexOutOfBoundsException("Sorry Soldier that index is overboard");
+		if (index > this.size - 1 && this.size > 0 && element != null)
+			throw new IndexOutOfBoundsException("Sorry Soldier that index is overboard");
 		LLNode<E> elemNode = new LLNode<>(element);
 		// Find the node at index.
 		LLNode<E> currentNode = this.head;
@@ -128,6 +136,10 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E set(int index, E element) 
 	{
 		// TODO: Implement this method
+		if (index < 0 || index > this.size - 1)
+			throw new IndexOutOfBoundsException("Sorry Soldier that index is overboard");
+		if (element == null)
+			throw new NullPointerException("You trying to add a null friend. It's a waste of precious time.");
 		this.add(index, element);
 		return this.remove(index + 1);
 	}   
