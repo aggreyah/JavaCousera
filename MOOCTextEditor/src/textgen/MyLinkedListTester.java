@@ -6,7 +6,6 @@ package textgen;
 import static org.junit.Assert.*;
 
 import java.util.LinkedList;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -109,12 +108,24 @@ public class MyLinkedListTester {
 	@Test
 	public void testRemove()
 	{
+		try {			
+			list1.remove(-1);			
+			fail("Check the lower bounds.");
+		} catch (IndexOutOfBoundsException e) {
+		}
+		try {
+			list1.remove(50);
+			fail("check the upper bounds");
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+		}
 		int a = list1.remove(0);
 		assertEquals("Remove: check a is correct ", 65, a);
 		assertEquals("Remove: check element 0 is correct ", (Integer)21, list1.get(0));
 		assertEquals("Remove: check size is correct ", 2, list1.size());
 		
 		// TODO: Add more tests here
+		assertEquals("Check if prev pointer is allocated ", list1.head.next.data, list1.get(0));
 	}
 	
 	/** Test adding an element into the end of the list, specifically
@@ -124,6 +135,16 @@ public class MyLinkedListTester {
 	public void testAddEnd()
 	{
         // TODO: implement this test
+		try {
+			list1.add(null);
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+		}
+		int sizeBefore = list1.size;
+		list1.add(120);
+		int sizeAfter = list1.size;
+		assertEquals("Test added is at the end ", list1.tail.prev.data, (Integer) 120);
+		assertEquals("Test size has increased by one.", sizeBefore, sizeAfter - 1);
 		
 	}
 
@@ -133,6 +154,7 @@ public class MyLinkedListTester {
 	public void testSize()
 	{
 		// TODO: implement this test
+		assertEquals("Test size(): ", list1.size, list1.size());
 	}
 
 	
@@ -145,6 +167,27 @@ public class MyLinkedListTester {
 	public void testAddAtIndex()
 	{
         // TODO: implement this test
+		try {			
+			list1.add(-1, 126);			
+			fail("Check the lower bounds.");
+		} catch (IndexOutOfBoundsException e) {
+		}
+		try {
+			list1.add(10, 178);
+			fail("check the upper bounds");
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+		}
+		try {
+			list1.add(0, null);
+			fail("check null pointer");
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+		}
+		int sizeBefore = list1.size;
+		list1.add(1, 567);
+		int sizeAfter = list1.size;
+		assertEquals("Test size increases by 1 ", sizeBefore + 1, sizeAfter);
 		
 	}
 	
@@ -153,6 +196,25 @@ public class MyLinkedListTester {
 	public void testSet()
 	{
 	    // TODO: implement this test
+		try {
+			list1.set(-3, 1024);
+			fail("check lower bound");
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+		}
+		try {
+			list1.set(56, 1024);
+			fail("check upper bound");
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+		}
+		try {
+			list1.set(0, null);
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+		}
+		list1.set(1, 1024);	
+		assertEquals("Test 1024 is added at correct position ", list1.get(1), (Integer)1024);
 	    
 	}
 	
