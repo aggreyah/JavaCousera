@@ -2,7 +2,9 @@ package spelling;
 
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -19,7 +21,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 
     public AutoCompleteDictionaryTrie()
 	{
-		root = new TrieNode();
+		this.root = new TrieNode();
 	}
 	
 	
@@ -40,7 +42,21 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		String lowerCaseWord = word.toLowerCase();
+		char [] wordCharArray = lowerCaseWord.toCharArray();
+		boolean nodeAdded = false;
+		TrieNode currentNode = this.root;
+		for (char c : wordCharArray) {
+			if (currentNode.getChild(c) == null) {
+				currentNode = currentNode.insert(c);
+				nodeAdded = true;
+			}
+			else {
+				currentNode = currentNode.getChild(c);
+			}
+		}
+		currentNode.setEndsWord(true);
+		return nodeAdded;
 	}
 	
 	/** 
@@ -50,7 +66,26 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+		LinkedList<TrieNode> mainList = new LinkedList<TrieNode>();
+		LinkedList<TrieNode> visitedList = new LinkedList<TrieNode>();
+		mainList.add(this.root);
+		while (!mainList.isEmpty()) {
+			Set<Character> childrenCharSet = mainList.getFirst().getValidNextCharacters();
+			if (!childrenCharSet.isEmpty()) {
+				for (char c : childrenCharSet)
+					mainList.add(mainList.getFirst().getChild(c));
+				TrieNode nodeToAdd = mainList.removeFirst();
+				visitedList.add(nodeToAdd);
+				if (nodeToAdd.endsWord())
+					this.size ++;
+			}else {
+				TrieNode nodeToAdd = mainList.removeFirst();
+				visitedList.add(nodeToAdd);
+				if (nodeToAdd.endsWord())
+					this.size ++;
+			}
+		}
+		return this.size;
 	}
 	
 	
@@ -60,7 +95,56 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		return false;
+		String smallS = s.toLowerCase();
+		if (s.isEmpty())
+			return false;
+		LinkedList<TrieNode> mainList = new LinkedList<TrieNode>();
+		LinkedList<TrieNode> visitedList = new LinkedList<TrieNode>();
+		boolean foundNodeWithWord = false;
+		mainList.add(this.root);
+		while (!mainList.isEmpty()) {
+			Set<Character> childrenCharSet = mainList.getFirst().getValidNextCharacters();
+			if (!childrenCharSet.isEmpty()) {
+				for (char c : childrenCharSet)
+					mainList.add(mainList.getFirst().getChild(c));
+				TrieNode nodeToAdd = mainList.removeFirst();
+				visitedList.add(nodeToAdd);
+				if (nodeToAdd.getText().equals(smallS))
+					foundNodeWithWord = true;
+			}else {
+				TrieNode nodeToAdd = mainList.removeFirst();
+				visitedList.add(nodeToAdd);
+				if (nodeToAdd.getText().equals(smallS))
+					foundNodeWithWord = true;
+			}
+		}
+		return foundNodeWithWord;
+	}
+	
+	public TrieNode nodeExists(String s) {
+		String smallS = s.toLowerCase();
+		if (s.isEmpty())
+			return null;
+		LinkedList<TrieNode> mainList = new LinkedList<TrieNode>();
+		LinkedList<TrieNode> visitedList = new LinkedList<TrieNode>();
+		mainList.add(this.root);
+		while (!mainList.isEmpty()) {
+			Set<Character> childrenCharSet = mainList.getFirst().getValidNextCharacters();
+			if (!childrenCharSet.isEmpty()) {
+				for (char c : childrenCharSet)
+					mainList.add(mainList.getFirst().getChild(c));
+				TrieNode nodeToAdd = mainList.removeFirst();
+				visitedList.add(nodeToAdd);
+				if (nodeToAdd.getText().equals(smallS))
+					return nodeToAdd;
+			}else {
+				TrieNode nodeToAdd = mainList.removeFirst();
+				visitedList.add(nodeToAdd);
+				if (nodeToAdd.getText().equals(smallS))
+					return nodeToAdd;
+			}
+		}
+		return null;
 	}
 
 	/** 
@@ -101,7 +185,35 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
     	 
-         return null;
+    	 LinkedList<TrieNode> queue = new LinkedList<TrieNode>();
+    	 LinkedList<TrieNode> completions = new LinkedList<TrieNode>();
+    	 TrieNode prefixNode = this.nodeExists(prefix);
+    	 if (prefixNode == null) {
+    		 System.out.println("The Node Doesn't Exist Buddy");
+    		 return Collections.emptyList();
+		 }
+    	 
+    	 else {
+    		 queue.add(prefixNode);
+    		 int i = 0;
+    		 while((!queue.isEmpty()) &&  (i < numCompletions) ){
+        		 TrieNode removed = queue.remove();
+        		 if (removed.endsWord()) {
+        			 completions.add(removed);
+        			 i++;
+    			 }
+        		 Set<Character> removedChildCharSet = removed.getValidNextCharacters();
+        		 if (!removedChildCharSet.isEmpty()) {
+     				for (char c : removedChildCharSet) 
+     					queue.add(removed.getChild(c));
+     			}
+        		 
+        	 }
+    	 }
+    	 List<String> textCompletions = new ArrayList<String>();
+    	 for (TrieNode node : completions)
+    		 textCompletions.add(node.getText());
+         return textCompletions;
      }
 
  	// For debugging
@@ -125,6 +237,33 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
  		}
  	}
  	
-
-	
+// 	public static void main(String[] args) {
+//// 		AutoCompleteDictionaryTrie emptyDict = new AutoCompleteDictionaryTrie();
+//// 		smallDict.addWord("Hello");
+//// 		smallDict.addWord("ehlLo");
+//// 		smallDict.addWord("oehlL");
+//// 		smallDict.addWord("ehoz");
+//// 		smallDict.printTree();
+// 		AutoCompleteDictionaryTrie smallDict = new AutoCompleteDictionaryTrie();
+//// 		smallDict.addWord("Hello");
+////		smallDict.addWord("HElLo");
+////		smallDict.addWord("help");
+////		smallDict.addWord("he");
+////		smallDict.addWord("hem");
+////		smallDict.addWord("hot");
+////		smallDict.addWord("hey");
+////		smallDict.addWord("a");
+////		smallDict.addWord("subsequent");
+// 		smallDict.addWord("a");
+// 		smallDict.addWord("east");
+// 		smallDict.addWord("rest");
+// 		smallDict.addWord("tea");
+// 		smallDict.addWord("easter");
+// 		smallDict.addWord("test");
+//		List<String> completions = smallDict.predictCompletions("te", 2);
+//		System.out.println("Completion length: " + completions.size());
+////		System.out.println("Does node exist: " + smallDict.nodeExists("ea").getText());
+//		for (String s: completions)
+//			System.out.println(s);
+//	} 	
 }
