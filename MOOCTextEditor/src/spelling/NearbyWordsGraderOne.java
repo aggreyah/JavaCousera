@@ -10,9 +10,11 @@ public class NearbyWordsGraderOne {
         int incorrect = 0;
         String feedback = "";
         PrintWriter out;
+        
+//        "grader_output/module5.part1.out"
 
         try {
-            out = new PrintWriter("grader_output/module5.part1.out");
+            out = new PrintWriter("test_cases/module5.part1.out");
         } catch (Exception e) {
             e.printStackTrace();
             return;

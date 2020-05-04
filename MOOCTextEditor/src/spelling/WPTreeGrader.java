@@ -28,8 +28,9 @@ public class WPTreeGrader {
         String feedback = "";
 
         PrintWriter out;
+//        grader_output/module5.part3.out"
         try {
-            out = new PrintWriter("grader_output/module5.part3.out");
+            out = new PrintWriter("test_cases/module5.part3.out");
         } catch (Exception e) {
             e.printStackTrace();
             return;
