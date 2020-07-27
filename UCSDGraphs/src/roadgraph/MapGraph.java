@@ -438,6 +438,12 @@ public class MapGraph {
 		return distance;
 	}
 	
+	/**
+	 * traverses the path using the nearest neighbor heuristic
+	 * @param set of map nodes that are to be visited at least once.
+	 * @return returns a linked list of nodes that has the least cost.
+	 * visiting the nearest of all the neighbors from each node.
+	 * */
 	public LinkedList<GeographicPoint> nearestNeighbor(HashSet<MapNode> mapNodes){
 		List<MapNode> listNodes = new ArrayList<MapNode>(mapNodes);
 		MapNode start = listNodes.get(0);
@@ -474,8 +480,10 @@ public class MapGraph {
 		return visitedPoints;		
 	}
 	
-	/*
-	 * re
+	/**
+	 * twoOpt uses the two-opt algorithm modifying path to establish a shorter path.
+	 * @param input is a greedy path established from the nearest neighbor algorithm.
+	 * @return returns a cheaper path than the greedy input path.
 	 */
 	public LinkedList<GeographicPoint> twoOpt(LinkedList<GeographicPoint> greedy){
 		
@@ -542,6 +550,11 @@ public class MapGraph {
 //		System.out.println("Path:\n" + leastLengthPath);
 		return leastLengthPath;
 	}
+	/**
+	 * uses the nearest neighbor plus the two-opt to get cheaper paths
+	 * @param a nodeset
+	 * @return returns a linked list of a path that is cheapest through iteration set by user.
+	 * */
 	
 	public LinkedList<GeographicPoint> nearestNeighborWithTwoOpt(HashSet<MapNode> nodeSet){
 		LinkedList<GeographicPoint> nearestNPath = nearestNeighbor(nodeSet);
