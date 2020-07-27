@@ -105,7 +105,21 @@ public class GraphAdjMatrix extends Graph {
 	 */	
 	public List<Integer> getDistance2(int v) {
 		// XXX Implement this method in week 2
-		return null;
+		List<Integer> twoHopNeighbors = new ArrayList<Integer>();
+		List<Integer> distance2Edges = new ArrayList<Integer>();
+		int[][] adjMatrixSquared = new int[this.adjMatrix.length][this.adjMatrix.length];
+		adjMatrixSquared = this.multiplyMatrixBySelf(this.adjMatrix);
+		//populate the distace2Edges
+		for (int i = 0; i < this.getNumVertices(); i++) {
+			distance2Edges.add(adjMatrixSquared[v][i]);
+		}
+		//populate twoHopNeighbors.
+		for (int i = 0; i < this.getNumVertices(); i++) {
+			for (int edge = 0; edge < distance2Edges.get(i); edge++) {
+				twoHopNeighbors.add(i);
+			} 
+		}		
+		return twoHopNeighbors;
 	}
 	
 	/**
@@ -123,6 +137,26 @@ public class GraphAdjMatrix extends Graph {
 			}
 		}
 		return s;
+	}
+	
+	/**
+	 * Multiply a matrix by itself
+	 * @param the matrix to be multiplied by itself
+	 * @return the product of multiplying matrix by itself
+	 * */
+	public int[][] multiplyMatrixBySelf(int[][] mat){
+		int numOfVertices = mat.length;
+		int[][] product = new int[numOfVertices][numOfVertices];
+		for (int row = 0; row < numOfVertices; row++) {
+			for (int column = 0; column < numOfVertices; column ++) {
+				product[row][column] = 0;
+				for (int j = 0; j < numOfVertices; j ++) {
+					product[row][column] += mat[row][j] * mat[j][column];
+				}
+			}
+		}
+		
+		return product;
 	}
 
 }
